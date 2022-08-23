@@ -17,6 +17,8 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("v = " + v);
         //transform.position += new Vector3(h, 0, v).normalized;
 
-        transform.Translate(Vector3.forward * Time.deltaTime * v * moveSpeed);
+        Vector3 moveDir = (Vector3.forward * v) + (Vector3.right * h);
+        transform.Translate(moveSpeed * Time.deltaTime * moveDir.normalized);
+
     }
 }
