@@ -10,10 +10,14 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float turnSpeed = 80.0f;
 
 
-    private void Start()
+    IEnumerator Start()
     {
         anim = GetComponent<Animation>();
         anim.Play("Idle");
+
+        turnSpeed = 0.0f;
+        yield return new WaitForSeconds(0.7f);
+        turnSpeed = 80.0f;
     }
     void Update()
     {
