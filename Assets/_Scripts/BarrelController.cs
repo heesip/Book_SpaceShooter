@@ -31,7 +31,7 @@ public class BarrelController : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        if (coll.collider.CompareTag("Bullet"))
+        if (coll.collider.CompareTag(AllString.Bullet))
         {
             if (++hitCount == 3)
             {

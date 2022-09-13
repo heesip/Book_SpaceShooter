@@ -8,7 +8,7 @@ public class RemoveBullet : MonoBehaviour
 
     void OnCollisionEnter(Collision coll)
     {
-        if (coll.collider.CompareTag("Bullet"))
+        if (coll.collider.CompareTag(AllString.Bullet))
         {
             ContactPoint cp = coll.GetContact(0);
 
