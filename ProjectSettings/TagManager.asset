@@ -7,6 +7,7 @@ TagManager:
   - Bullet
   - Punch
   - Monster
+  - HP_bar
   layers:
   - Default
   - TransparentFX
@@ -14,10 +15,10 @@ TagManager:
   - Barrel
   - Water
   - UI
-  - Player
   - Monster
   - Punch
-  - 
+  - Player
+  - Bullet
   - 
   - 
   - 

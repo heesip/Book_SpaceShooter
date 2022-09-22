@@ -16,6 +16,8 @@ public class FireController : MonoBehaviour
     MeshRenderer muzzleFlash;
     [SerializeField] float flash = 0.05f;
 
+    RaycastHit hit;
+
     private void Start()
     {
         audio = GetComponent<AudioSource>();
@@ -25,9 +27,21 @@ public class FireController : MonoBehaviour
 
     void Update()
     {
+        Debug.DrawRay(firePos.position, firePos.forward * 10.0f, Color.green);
+
         if (Input.GetMouseButtonDown(0))
         {
             Fire();
+
+            if (Physics.Raycast(firePos.position,
+                                firePos.forward,
+                                out hit,
+                                10.0f, 1 << 6
+                                ))
+            {
+                Debug.Log($"Hit = {hit.transform.name}");
+                hit.transform.GetComponent<MonsterController>()?.OnDamage(hit.point, hit.normal);
+            }
         }
     }
 

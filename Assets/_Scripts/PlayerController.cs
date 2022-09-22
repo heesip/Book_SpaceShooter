@@ -2,11 +2,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
     Animation anim;
     readonly string Idle = "Idle";
+    Transform tr;
     readonly string RunF = "RunF";
     readonly string RunB = "RunB";
     readonly string RunR = "RunR";
@@ -14,14 +16,15 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float moveSpeed = 10.0f;
     [SerializeField] float turnSpeed = 80.0f;
     readonly float initHp = 100.0f;
-    public float currentHP;
-    Transform tr;
+    [SerializeField] Image hpbar;
 
+    public float currentHP;
     public delegate void PlayerDieHandler();
     public static event PlayerDieHandler OnPlayerDie;
 
     IEnumerator Start()
     {
+        hpbar = GameObject.FindGameObjectWithTag(AllString.HP_bar)?.GetComponent<Image>();
         tr = GetComponent<Transform>();
         anim = GetComponent<Animation>();
         anim.Play(Idle);
@@ -75,6 +78,7 @@ public class PlayerController : MonoBehaviour
         if (currentHP >= 0.0f && other.CompareTag(AllString.Punch))
         {
             currentHP -= 10.0f;
+            DisplayHealth();
             Debug.Log($"Player Hp : ={currentHP / initHp}");
 
             if (currentHP <= 0.0f)
@@ -88,14 +92,15 @@ public class PlayerController : MonoBehaviour
     private void PlayerDie()
     {
         Debug.Log("Player Die !");
-        //GameObject[] monsters = GameObject.FindGameObjectsWithTag("Monster");
-
-        //foreach (GameObject monster in monsters)
-        //{
-        //    monster.SendMessage("OnPlayerDie", SendMessageOptions.DontRequireReceiver);
-        //}
 
         OnPlayerDie();
+
+        GameManager.instance.IsGameOver = true;
+    }
+
+    void DisplayHealth()
+    {
+        hpbar.fillAmount = currentHP / initHp;
     }
 }
 

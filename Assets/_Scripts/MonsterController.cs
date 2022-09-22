@@ -31,29 +31,28 @@ public class MonsterController : MonoBehaviour
     GameObject bloodEffect;
     public SphereCollider RightHand;
     public SphereCollider LeftHand;
+    private float rebonTime = 3.0f;
 
-    private void OnEnable()
-    {
-        PlayerController.OnPlayerDie += this.OnPlayerDie;
-    }
-
-    private void OnDisable()
-    {
-        PlayerController.OnPlayerDie -= this.OnPlayerDie;
-    }
-
-    void Start()
+    private void Awake()
     {
         monsterTr = GetComponent<Transform>();
         target = GameObject.FindWithTag(AllString.Player).GetComponent<Transform>();
         agent = GetComponent<NavMeshAgent>();
         anim = GetComponent<Animator>();
+        bloodEffect = Resources.Load<GameObject>(AllString.BloodSprayEffect);
+    }
 
-        bloodEffect = Resources.Load<GameObject>("BloodSprayEffect");
-
+    private void OnEnable()
+    {
+        state = State.IDLE;
+        PlayerController.OnPlayerDie += this.OnPlayerDie;
         StartCoroutine(CheckMonsterState());
         StartCoroutine(MonsterAction());
+    }
 
+    private void OnDisable()
+    {
+        PlayerController.OnPlayerDie -= this.OnPlayerDie;
     }
 
     private void OnDrawGizmos()
@@ -76,19 +75,36 @@ public class MonsterController : MonoBehaviour
         if (collision.collider.CompareTag(AllString.Bullet))
         {
             Destroy(collision.gameObject);
-            anim.SetTrigger(hashHit);
+            //anim.SetTrigger(hashHit);
 
-            Vector3 pos = collision.GetContact(0).point;
+            //Vector3 pos = collision.GetContact(0).point;
 
-            Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
+            //Quaternion rot = Quaternion.LookRotation(-collision.GetContact(0).normal);
 
-            ShowBloodEffect(pos, rot);
+            //ShowBloodEffect(pos, rot);
+            
+            //hp -= 20;
+            //if (hp <= 0)
+            //{
+            //    state = State.DIE;
+            //    GameManager.instance.DisplayScore(50);
+            //}
+        }
+    }
 
-            hp -= 10;
-            if (hp <= 0)
-            {
-                state = State.DIE;
-            }
+    public void OnDamage(Vector3 pos, Vector3 normal)
+    {
+        anim.SetTrigger(hashHit);
+
+        Quaternion rot = Quaternion.LookRotation(normal);
+
+        ShowBloodEffect(pos, rot);
+
+        hp -= 20;
+        if (hp <= 0)
+        {
+            state = State.DIE;
+            GameManager.instance.DisplayScore(50);
         }
     }
 
@@ -146,6 +162,11 @@ public class MonsterController : MonoBehaviour
                     agent.isStopped = true;
                     anim.SetTrigger(hashDie);
                     GetComponent<CapsuleCollider>().enabled = false;
+                    yield return new WaitForSeconds(rebonTime);
+                    hp = 100;
+                    isDead = false;
+                    GetComponent<CapsuleCollider>().enabled = true;
+                    this.gameObject.SetActive(false);
                     break;
             }
             yield return new WaitForSeconds(thinkTime);
