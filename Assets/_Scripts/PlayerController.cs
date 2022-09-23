@@ -32,7 +32,7 @@ public class PlayerController : MonoBehaviour
         turnSpeed = 0.0f;
         currentHP = initHp;
         yield return new WaitForSeconds(0.7f);
-        turnSpeed = 80.0f;
+        turnSpeed = 1500.0f;
     }
     void Update()
     {

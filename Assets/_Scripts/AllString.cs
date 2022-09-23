@@ -20,4 +20,8 @@ public static class AllString
     public static readonly string BloodSprayEffect = "BloodSprayEffect";
     public static readonly string SpawnPointGroup = "SpawnPointGroup";
     public static readonly string GameManager = "GameManager";
+
+    //Scene
+    public static readonly string Level_01 = "Level_01";
+    public static readonly string Play = "Play";
 }

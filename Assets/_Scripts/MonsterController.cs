@@ -42,6 +42,18 @@ public class MonsterController : MonoBehaviour
         bloodEffect = Resources.Load<GameObject>(AllString.BloodSprayEffect);
     }
 
+    private void Update()
+    {
+        if(agent.remainingDistance>= 2.0f)
+        {
+            Vector3 direction = agent.desiredVelocity;
+
+            Quaternion rot = Quaternion.LookRotation(direction);
+
+            monsterTr.rotation = Quaternion.Slerp(monsterTr.rotation, rot, Time.deltaTime * 10.0f);
+        }
+    }
+
     private void OnEnable()
     {
         state = State.IDLE;

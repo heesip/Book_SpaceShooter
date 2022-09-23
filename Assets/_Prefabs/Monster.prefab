@@ -660,7 +660,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   state: 0
-  traceDist: 10
+  traceDist: 20
   attackDist: 2
   isDead: 0
   RightHand: {fileID: 318737739088008590}
